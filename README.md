@@ -21,6 +21,12 @@ Custom firmware for a **CH552G-based USB-C / 3.5 mm TRS CW paddle adapter**. It 
 5. Click **Download**. Do not disconnect during programming; release BOOT after programming begins. After success, disconnect and reconnect **without** holding BOOT.
 6. Connect your passive paddle to the 3.5 mm jack: **tip → z**, **ring → x**, **sleeve → common**.
 
+**WCHISPStudio / WCHISPTool screenshot:**
+
+![WCHISPStudio application screenshot](WCHISPStudio.png)
+
+*Example of the WCH flashing software. The interface may look slightly different depending on the installed version.*
+
 For a more detailed walkthrough and driver troubleshooting, follow **[Flashing with WCHISPTool](docs/FLASHING_WCHISPTOOL.md)**.
 
 > The released HEX is offered as the ready-to-flash build. Its association with the tested hold-mode version is based on the uploaded release; this page does not independently verify the contents of the binary. Flashing replaces the factory firmware.
@@ -83,7 +89,7 @@ The USB helper sources require the `include/` and `usbCommonDescriptors/` header
 1. Download **WCHISPTool_Setup.exe** from the official WCH link above (some versions distribute it in an archive).
 2. Run its installer and install the included **WCH/CH375 USB driver** if prompted. Administrator approval may be required.
 3. Start **WCHISPTool**. No serial/COM-port selection is required: this board is programmed in **USB** bootloader mode.
-4. Follow [the illustrated-by-settings step-by-step flashing guide](docs/FLASHING_WCHISPTOOL.md) below once you have the `.hex`.
+4. Follow [the illustrated step-by-step flashing guide](docs/FLASHING_WCHISPTOOL.md) below once you have the `.hex`.
 
 ## Build on Windows
 
