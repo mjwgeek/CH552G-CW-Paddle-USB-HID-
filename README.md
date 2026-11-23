@@ -10,6 +10,21 @@ Custom firmware for a **CH552G-based USB-C / 3.5 mm TRS CW paddle adapter**. It 
 
 **Switch sense:** passive paddle shorts tip or ring to sleeve; internal pull-ups hold the inputs HIGH when released, LOW when pressed. These pin mappings were measured on **one particular adapter**. Check continuity before flashing a different CH552 board.
 
+## Quick start: flash the ready-made HEX (recommended)
+
+**No Arduino IDE or compiler needed.** Download the precompiled **[Morse_Code.ino.hex](https://github.com/mjwgeek/CH552G-CW-Paddle-USB-HID-/releases/download/Release/Morse_Code.ino.hex)** from the published **[Version 1.0 GitHub Release](https://github.com/mjwgeek/CH552G-CW-Paddle-USB-HID-/releases/tag/Release)**. The file is a release asset, **not** a file under the repository's `firmware/` source folders.
+
+1. Install **[WCHISPTool for Windows](https://www.wch-ic.com/downloads/WCHISPTool_Setup_exe.html)** and its WCH USB bootloader driver, if prompted.
+2. Open WCHISPTool and select **CH55x → CH552 → USB**. Uncheck **Automatic Download When Device Connect**.
+3. Choose the downloaded `Morse_Code.ino.hex` in **Object File1**.
+4. Unplug the adapter; hold its white **BOOT** button while connecting USB. Keep holding until WCHISPTool detects the CH552 (on the tested board: bootloader VID/PID `4348:55E0`).
+5. Click **Download**. Do not disconnect during programming; release BOOT after programming begins. After success, disconnect and reconnect **without** holding BOOT.
+6. Connect your passive paddle to the 3.5 mm jack: **tip → z**, **ring → x**, **sleeve → common**.
+
+For a more detailed walkthrough and driver troubleshooting, follow **[Flashing with WCHISPTool](docs/FLASHING_WCHISPTOOL.md)**.
+
+> The released HEX is offered as the ready-to-flash build. Its association with the tested hold-mode version is based on the uploaded release; this page does not independently verify the contents of the binary. Flashing replaces the factory firmware.
+
 ## Behavior and status
 
 - **Hold mode (default, confirmed on the actual board):** key-down while a paddle contact is closed; key-up on release. Tested with Windows after reboot; CH552 USB keyboard transmission was also tested on Android and Linux. This is the right choice when software measures press duration.
@@ -39,19 +54,19 @@ docs/WIRING.md
 
 The USB helper sources require the `include/` and `usbCommonDescriptors/` headers from the installed CH55xDuino example. **Do not compile the six overrides by themselves.** The preparation scripts copy the whole official example `src/` tree and then overwrite the six files with the project's versions, leaving its dependencies intact. This makes the project follow your locally installed CH55xDuino core instead of copying headers from an unverified release.
 
-## Software needed (Windows)
+## Software needed (Windows): ready-made HEX vs. compiling
 
-You need **two applications**, plus the Arduino CH55xDuino board package:
+**For the precompiled HEX, you only need WCHISPTool.** The Arduino IDE and CH55xDuino board package are optional, for building or modifying source:
 
 | Software | Purpose | Official source |
 |---|---|---|
-| **Arduino IDE** | Compile the source code and export an Intel HEX firmware file | [arduino.cc/en/software](https://www.arduino.cc/en/software) |
-| **CH55xDuino board package** | Add the CH552 board, compiler and USB HID example to Arduino IDE | [DeqingSun/ch55xduino](https://github.com/DeqingSun/ch55xduino) |
+| **Arduino IDE** *(optional)* | Compile the source code and export an Intel HEX firmware file | [arduino.cc/en/software](https://www.arduino.cc/en/software) |
+| **CH55xDuino board package** *(optional)* | Add the CH552 board, compiler and USB HID example to Arduino IDE | [DeqingSun/ch55xduino](https://github.com/DeqingSun/ch55xduino) |
 | **WCHISPTool (Windows)** | Flash the exported `.hex` into the CH552G over USB | [Official WCHISPTool download](https://www.wch-ic.com/downloads/WCHISPTool_Setup_exe.html) ([WCH tools catalog](https://www.wch-ic.com/downloads/category/30.html)) |
 
 **You do not need Zadig, an external USB-to-serial adapter, a COM port, or a separate SDCC installation** for the documented Windows workflow. WCHISPTool's installer provides the manufacturer's bootloader driver on supported Windows systems. Changing bootloader USB drivers with Zadig can prevent WCHISPTool from detecting the chip.
 
-### Install Arduino IDE and CH55xDuino
+### Install Arduino IDE and CH55xDuino (only for building from source)
 
 1. Download and install Arduino IDE using the official link above.
 2. In Arduino IDE open **File > Preferences** (on some platforms **Arduino IDE > Settings**).
@@ -87,7 +102,7 @@ You need **two applications**, plus the Arduino CH55xDuino board package:
    - USB Settings: `USER CODE w/ 148B USB RAM`
    - Bootloader pin: `P3.6 (D+) pull-up`
    - Upload Method: `USB`
-5. Select **Sketch > Verify/Compile**; then **Sketch > Export Compiled Binary**. The resulting `Morse_Code.ino.hex` should appear beside `Morse_Code.ino` in the prepared sketch folder. **There is no tested/precompiled HEX included in this repository.**
+5. Select **Sketch > Verify/Compile**; then **Sketch > Export Compiled Binary**. The resulting `Morse_Code.ino.hex` should appear beside `Morse_Code.ino` in the prepared sketch folder. Alternatively, skip the build and download the ready-made file from the [Version 1.0 release](https://github.com/mjwgeek/CH552G-CW-Paddle-USB-HID-/releases/tag/Release).
 6. Flash the HEX using [the WCHISPTool guide](docs/FLASHING_WCHISPTOOL.md).
 
 > **Manual assembly:** Open the installed CH55xDuino `Generic_Examples > 05.USB > HidKeyboard` example, use **Save As** to create a sketch named `Morse_Code`, replace its `.ino` with the chosen `firmware/.../Morse_Code.ino`, then copy all six overrides into its `src/userUsbHidKeyboard/` directory (replacing those six files). Keep all of the original example's other `src/` directories intact. Compile and export the HEX as above.
