@@ -57,6 +57,12 @@ Open WCHISPTool and select:
 | Run The Target Program After Download | **Checked** |
 | Enable NoKey serial port download | Leave default; not needed for this BOOT-button procedure |
 
+**Application screenshot:**
+
+![WCHISPStudio application screenshot](../WCHISPStudio.png)
+
+*Screenshot provided with this project. Use the settings in the table above; labels and layout may vary by WCHISPTool / WCHISPStudio version.*
+
 ## 2. Load firmware
 
 - At **Object File1**, click the `...` browse button.
