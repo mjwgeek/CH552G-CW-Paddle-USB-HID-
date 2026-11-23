@@ -1,13 +1,22 @@
 # Flashing a CH552G USB-C CW paddle adapter using WCHISPTool (Windows)
 
-This guide assumes that you've already **compiled and exported** `Morse_Code.ino.hex` using the CH55xDuino `CH552 Board` profile. It works for either hold or tap sketch.
+## Easiest method: use the precompiled release HEX
 
-## Required software and hardware
+**Only WCHISPTool is required; Arduino IDE and CH55xDuino are not needed to flash a release.**
 
-**Software:**
+1. Download **[Morse_Code.ino.hex](https://github.com/mjwgeek/CH552G-CW-Paddle-USB-HID-/releases/download/Release/Morse_Code.ino.hex)** from the published **[Version 1.0 release](https://github.com/mjwgeek/CH552G-CW-Paddle-USB-HID-/releases/tag/Release)**. Save it somewhere easy to find, such as your Desktop or Downloads folder. The filename is intentionally `Morse_Code.ino.hex`.
+2. Download and install **[WCHISPTool (official WCH website)](https://www.wch-ic.com/downloads/WCHISPTool_Setup_exe.html)**, allowing the WCH USB bootloader driver to install if prompted.
+3. Start WCHISPTool, then continue at **[Step 1: Select device](#1-select-device-in-wchisptool)** below. Use the downloaded release HEX as **Object File1**.
+4. **Do not** use the Arduino IDE **Upload** action. WCHISPTool does the flashing.
 
-1. **Arduino IDE**, from [Arduino's official download page](https://www.arduino.cc/en/software), is used to compile the firmware and export the `.hex` file. It is **not** used for uploading in these instructions.
-2. **CH55xDuino**, from [Deqing Sun's GitHub repository](https://github.com/DeqingSun/ch55xduino), adds `CH552 Board` and the SDCC toolchain to Arduino. In Arduino **File > Preferences > Additional Boards Manager URLs**, paste:
+**Source build (optional):** To change the keyboard mapping or rebuild a HEX, follow [Step 0](#0-build-the-firmware-hex-in-arduino-ide-optional) below, then flash the newly compiled file in the same way.
+
+## Required software and hardware (source building is optional)
+
+**Software (only WCHISPTool is needed for the precompiled HEX):**
+
+1. **Arduino IDE** *(optional, for compiling)*, from [Arduino's official download page](https://www.arduino.cc/en/software), is used to compile the firmware and export the `.hex` file. It is **not** used for uploading in these instructions.
+2. **CH55xDuino** *(optional, for compiling)*, from [Deqing Sun's GitHub repository](https://github.com/DeqingSun/ch55xduino), adds `CH552 Board` and the SDCC toolchain to Arduino. In Arduino **File > Preferences > Additional Boards Manager URLs**, paste:
 
    ```text
    https://raw.githubusercontent.com/DeqingSun/ch55xduino/ch55xduino/package_ch55xduino_mcs51_index.json
@@ -20,7 +29,7 @@ This guide assumes that you've already **compiled and exported** `Morse_Code.ino
 
 **Not needed:** Zadig, COM port, USB serial adapter, a separate SDCC install. Do not use Zadig to replace the CH552 bootloader driver when programming with WCHISPTool.
 
-## 0. Build the firmware HEX in Arduino IDE
+## 0. Build the firmware HEX in Arduino IDE (optional)
 
 1. Download/clone this GitHub project. From PowerShell opened in the extracted repository folder, run ` .\tools\Prepare-Sketch.ps1 -Mode hold ` (or `-Mode tap` for the optional unverified one-tap mode). If script execution is blocked, use the manual copy instructions in the [README](../README.md).
 2. Open the generated `build\hold\Morse_Code\Morse_Code.ino` in Arduino IDE.
@@ -51,7 +60,7 @@ Open WCHISPTool and select:
 ## 2. Load firmware
 
 - At **Object File1**, click the `...` browse button.
-- Select the **exported** `Morse_Code.ino.hex`.
+- Select either the **downloaded release** `Morse_Code.ino.hex`, or the one you exported yourself from Arduino.
 - Do not select the `.elf`, `.mem`, `.lk`, `.map`, or `.ino` files.
 - Leave DataFlash and other object-file slots empty unless your device-specific tool explicitly requires them.
 
